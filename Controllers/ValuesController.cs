@@ -33,8 +33,9 @@ namespace ApiRestMediatR.Controllers
 
         // POST api/<ValuesController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async System.Threading.Tasks.Task PostAsync([FromBody] string value)
         {
+            await _mediator.Send(new Command.AddValueCommand.Command { Value = value });
         }
 
         // PUT api/<ValuesController>/5
