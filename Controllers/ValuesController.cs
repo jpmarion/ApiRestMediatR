@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,11 +10,18 @@ namespace ApiRestMediatR.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly IMediator _mediator;
+
+        public ValuesController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
         // GET: api/<ValuesController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async System.Threading.Tasks.Task<IEnumerable<string>> GetAsync()
         {
-            return new string[] { "value1", "value2" };
+            return await _mediator.Send(new Queries.GetValuesQuery.Query());
         }
 
         // GET api/<ValuesController>/5
